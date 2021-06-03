@@ -14,15 +14,15 @@ public class Input {
 
     private Integer id;
 
-    private String title;
+    private String firstname;
 
-    private String location;
+    private String lastname;
 
-    private String participant;
+    private String email;
 
     private String date;
 
-    private String note;
+    private String address;
 
     private String file;
 

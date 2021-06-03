@@ -6,11 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class InputDTO {
     private Integer id;
-    private String title;
-    private String location;
-    private String participant;
+    private String firstname;
+    private String lastname;
+    private String email;
     private String date;
-    private String note;
+    private String address;
     private String file;
 
 }
