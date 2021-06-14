@@ -1,8 +1,10 @@
-package ngutestbackend.demo.controller.restapi;
+package coba.daily.you.controller.restapi;
 
-import ngutestbackend.demo.model.entity.*;
-import ngutestbackend.demo.model.dto.InputDTO;
-import ngutestbackend.demo.repository.*;
+import coba.daily.you.model.entity.Input;
+import coba.daily.you.repository.InputRepository;
+import coba.daily.you.model.entity.*;
+import coba.daily.you.model.dto.InputDTO;
+import coba.daily.you.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -19,8 +21,8 @@ import java.util.Base64;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/input")
-@CrossOrigin(origins = "http://localhost:3001")
+@RequestMapping("/team")
+@CrossOrigin(origins = "http://localhost:3000")
 public class InputAPI {
     @Autowired
     private InputRepository inputRepository;
@@ -38,12 +40,12 @@ public class InputAPI {
         List<Input> inputList = inputRepository.findAll();
         List<InputDTO> inputDTOList =
                 inputList.stream()
-                        .map(in -> mapToDTO(in))
+                        .map(in -> mapInputToInputDto(in))
                         .collect(Collectors.toList());
         return inputDTOList;
     }
 
-    private InputDTO mapToDTO(Input input) {
+    private InputDTO mapInputToInputDto(Input input) {
         InputDTO inputDTO = modelMapper.map(input, InputDTO.class);
         return inputDTO;
     }
@@ -51,7 +53,7 @@ public class InputAPI {
     @GetMapping("/getImage/{id}")
     public String getImage(@PathVariable Integer id) throws IOException {
         Input input = inputRepository.findById(id).get();
-        String userFolderPath = "E:/";
+        String userFolderPath = "E:/images/";
 //        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
         String pathFile = userFolderPath + input.getFile();
         Path paths = Paths.get(pathFile);
@@ -67,21 +69,42 @@ public class InputAPI {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/save")
     public InputDTO saveData(@RequestPart(value="data", required = true) InputDTO inputDTO, @RequestPart(value="file", required = true) MultipartFile file) throws Exception {
         Input input = modelMapper.map(inputDTO, Input.class);
-        String userFolderPath = "C:/Users/lenovo/Images/";
+        String userFolderPath = "E:/images/";
 //        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
         Path path = Paths.get(userFolderPath);
         Path filePath = path.resolve(file.getOriginalFilename());
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         input.setFile(file.getOriginalFilename());
         input = inputRepository.save(input);
-        InputDTO inputDTO1 = mapToDTO(input);
+        InputDTO inputDTO1 = mapInputToInputDto(input);
         return inputDTO1;
     }
 
-
-
-    @DeleteMapping
-    public void del(){
-        inputRepository.deleteAll();
+    @PostMapping("/save")
+    public InputDTO saveData(@RequestBody InputDTO inputDTO) {
+        Input input = modelMapper.map(inputDTO, Input.class);
+        input = inputRepository.save(input);
+        InputDTO inputDTO1 = mapInputToInputDto(input);
+        return inputDTO1;
     }
+
+    @GetMapping("/{id}")
+    public InputDTO getData(@PathVariable Integer id) {
+        Input input = inputRepository.findById(id).get();
+        InputDTO inputDTO = new InputDTO();
+        modelMapper.map(input, inputDTO);
+        inputDTO.setId(input.getId());
+        return  inputDTO;
+    }
+
+//    @DeleteMapping
+//    public void del(){
+//        inputRepository.deleteAll();
+//    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        inputRepository.deleteById(id);
+    }
+
 }

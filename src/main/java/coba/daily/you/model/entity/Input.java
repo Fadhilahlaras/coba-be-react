@@ -1,4 +1,4 @@
-package ngutestbackend.demo.model.entity;
+package coba.daily.you.model.entity;
 
 import lombok.Data;
 
@@ -14,15 +14,19 @@ public class Input {
 
     private Integer id;
 
-    private String firstname;
+    private String name;
 
-    private String lastname;
+    private String pbirth;
+
+    private String bdate;
+
+    private String address;
+
+    private String religion;
 
     private String email;
 
-    private String date;
-
-    private String address;
+    private String note;
 
     private String file;
 

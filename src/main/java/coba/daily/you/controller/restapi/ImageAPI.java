@@ -1,23 +1,12 @@
-package ngutestbackend.demo.controller.restapi;
+package coba.daily.you.controller.restapi;
 
 
-import ngutestbackend.demo.model.dto.InputDTO;
-import ngutestbackend.demo.model.entity.Input;
+import coba.daily.you.repository.InputRepository;
+import coba.daily.you.model.dto.InputDTO;
+import coba.daily.you.model.entity.Input;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ngutestbackend.demo.repository.InputRepository;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-import ngutestbackend.demo.controller.restapi.InputAPI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-
 
 
 @RequestMapping("/upload")
