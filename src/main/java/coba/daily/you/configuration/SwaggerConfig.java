@@ -1,4 +1,4 @@
-package ngutestbackend.demo.configuration;
+package coba.daily.you.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

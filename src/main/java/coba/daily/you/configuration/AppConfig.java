@@ -1,4 +1,4 @@
-package ngutestbackend.demo.configuration;
+package coba.daily.you.configuration;
 
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
