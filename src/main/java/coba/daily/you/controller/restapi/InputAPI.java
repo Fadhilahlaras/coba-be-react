@@ -55,38 +55,43 @@ public class InputAPI {
         Input input = inputRepository.findById(id).get();
         String userFolderPath = "E:/images/";
 //        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
-        String pathFile = userFolderPath + input.getFile();
+        String pathFile = userFolderPath + input.getPictureUrl();
         Path paths = Paths.get(pathFile);
-        byte[] photo = Files.readAllBytes(paths);
-        String encodedString = Base64.getEncoder().encodeToString(photo);
-
-        return encodedString;
+        byte[] foto = Files.readAllBytes(paths);
+        String img = Base64.getEncoder().encodeToString(foto);
+        return img;
 
     }
 
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/save")
-    public InputDTO saveData(@RequestPart(value="data", required = true) InputDTO inputDTO, @RequestPart(value="file", required = true) MultipartFile file) throws Exception {
+    public InputDTO editSaveData(@RequestPart(value="data", required = true) InputDTO inputDTO, @RequestPart(value="pictureUrl", required = false) MultipartFile file) throws Exception {
         Input input = modelMapper.map(inputDTO, Input.class);
-        String userFolderPath = "E:/images/";
+
+        if (file == null){
+            input.setPictureUrl(inputRepository.findById(inputDTO.getId()).get().getPictureUrl());
+        } else {
+            String userFolderPath = "E:/images/";
 //        String userFolderPath = "C:/Users/Lenovo/FullStackTech/ngu-test/src/assets/utils/images/";
-        Path path = Paths.get(userFolderPath);
-        Path filePath = path.resolve(file.getOriginalFilename());
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        input.setFile(file.getOriginalFilename());
+            Path path = Paths.get(userFolderPath);
+            Path filePath = path.resolve(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            input.setPictureUrl(file.getOriginalFilename());
+        }
+
         input = inputRepository.save(input);
         InputDTO inputDTO1 = mapInputToInputDto(input);
         return inputDTO1;
     }
 
-    @PostMapping("/save")
-    public InputDTO saveData(@RequestBody InputDTO inputDTO) {
-        Input input = modelMapper.map(inputDTO, Input.class);
-        input = inputRepository.save(input);
-        InputDTO inputDTO1 = mapInputToInputDto(input);
-        return inputDTO1;
-    }
+//    @PostMapping("/save")
+//    public InputDTO saveData(@RequestBody InputDTO inputDTO) {
+//        Input input = modelMapper.map(inputDTO, Input.class);
+//        input = inputRepository.save(input);
+//        InputDTO inputDTO1 = mapInputToInputDto(input);
+//        return inputDTO1;
+//    }
 
     @GetMapping("/{id}")
     public InputDTO getData(@PathVariable Integer id) {

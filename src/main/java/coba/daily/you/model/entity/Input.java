@@ -28,7 +28,7 @@ public class Input {
 
     private String note;
 
-    private String file;
+    private String pictureUrl;
 
 
 }

@@ -13,6 +13,6 @@ public class InputDTO {
     private String religion;
     private String email;
     private String note;
-    private String file;
+    private String pictureUrl;
 
 }
